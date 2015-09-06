@@ -1,0 +1,77 @@
+{
+	"name": "quickSearch",
+	"author": "zsytssk",
+	"version": "0.1",
+	"manifest_version": 2,
+	"description": "open search engin in current page",
+	"commands": {
+		"toggle-edit": {
+			"suggested_key": {
+				"windows": "Alt+E",
+				"mac": "Alt+E",
+				"chromeos": "Alt+E",
+				"linux": "Alt+E"
+			},
+			"description": "toggle-edit"
+		},
+		"change-SearchEngine": {
+			"suggested_key": {
+				"windows": "Alt+C",
+				"mac": "Alt+C",
+				"chromeos": "Alt+C",
+				"linux": "Alt+C"
+			},
+			"description": "change-SearchEngine"
+		},
+		"_execute_browser_action": {
+			"suggested_key": {
+				"windows": "Alt+Q",
+				"mac": "Alt+Q",
+				"chromeos": "Alt+Q",
+				"linux": "Alt+Q"
+			}
+		}
+	},
+	"icons": {
+		"16": "style/images/icons/Icon16.png",
+		"48": "style/images/icons/Icon48.png",
+		"128": "style/images/icons/Icon128.png"
+	},
+	"browser_action": {
+		"default_icon": "style/images/icons/Icon128disabled.png"
+	},
+	"permissions": [
+		"storage", "webRequest", "webRequestBlocking", "contextMenus", "debugger",
+		"*://*/*"
+	],
+	"background": {
+		"persistent": true,
+		"page": "background.html"
+	},
+	"options_page": "options.html",
+	"web_accessible_resources": [
+		"style/plugin/font-awesome/css/font-awesome.css",
+		"style/plugin/font-awesome/fonts/FontAwesome.otf",
+		"content_scripts/quickSearch.html",
+		"options.html"
+	],
+	"content_scripts": [{
+		"run_at": "document_start",
+		"all_frames": true,
+		"matches": ["*://*/*from=quicksearch*"],
+		"css": ["content_scripts/searchEngine/style.css"],
+		"js": ["content_scripts/searchEngine/search.js"]
+	}, {
+		"run_at": "document_idle",
+		"matches": ["*://*/*"],
+		"exclude_globs": ["chrome://newtab"],
+		"css": ["style/plugin/font-awesome/css/font-awesome.css", "content_scripts/content.css"],
+		"js": ["content_scripts/content.main.js"]
+	}, {
+		"run_at": "document_idle",
+		"matches": ["*://*/*"],
+		"all_frames": true,
+		"js": ["content_scripts/content.iframe.js"]
+	}],
+	"minimum_chrome_version": "38"
+}

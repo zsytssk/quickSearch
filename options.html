@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>设置搜索引擎</title>
+	<script src="common/options.js"></script>
+	<style>
+	body {
+		font-size: 14px;
+	}
+	
+	ul,
+	li {
+		padding: 0;
+	}
+	
+	input {
+		vertical-align: middle;
+		margin: 0 3px;
+	}
+	</style>
+</head>
+
+<body>
+	搜索引擎:
+	<span class="searchEnginelist">
+		<label for="baidu"><input type="radio" name="searchEngine" data-searchurl="https://www.baidu.com/s?wd=" id="baidu">百度</label>
+		<label for="google"><input type="radio" name="searchEngine" data-searchurl="https://www.google.com/search?q=" checked id="google">google</label>
+	</span>
+	<div id="message" style="color: green"></div>
+	<div class="help-list">
+		<ul>
+			<li>
+				<key>esc</key> 关闭搜索侧边栏
+			</li>
+			<li>
+				<key>alt+q</key> 打开搜索侧边栏
+				< /li>
+					<li>
+						<key>alt+e</key> 编辑搜索文字
+					</li>
+					<li>
+						<key>alt+C</key> 切换搜索引擎
+					</li>
+					<li>
+						你可以自定义快捷键 打开 chrome://extensions/ 滚动到页面最底部 点击
+						<键盘快捷键>
+					</li>
+		</ul>
+	</div>
+</body>
+
+</html>
