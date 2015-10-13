@@ -8,15 +8,15 @@ var bs, bsbox, bsform, bsinput, bscon, bstopbar;
 var bsformcontent, change, external, bsiframe, btn_search, btn_cancel, btn_more;
 var lastUpdate = '2015/07/22 10:13';
 
-chrome.storage.sync.get('quickSearch', function(r) {
+chrome.storage.sync.get('quickSearch', function (r) {
     var islastUpdate;
-    if (!r.quickSearch) {
+    if(!r.quickSearch) {
         islastUpdate = false;
     } else {
         islastUpdate = Date.parse(r.quickSearch.lastUpdate) >= Date.parse(lastUpdate);
     }
 
-    if (islastUpdate) {
+    if(islastUpdate) {
         quickSearch = r.quickSearch;
     } else {
         quickSearch = {
@@ -37,7 +37,7 @@ chrome.storage.sync.get('quickSearch', function(r) {
     searchurl = quickSearch.List[quickSearch.curIndex].url;
 });
 
-httpRequest(chrome.extension.getURL('content_scripts/quickSearch.html'), function(data) {
+httpRequest(chrome.extension.getURL('content_scripts/quickSearch.html'), function (data) {
     chrome.runtime.sendMessage({
         'newIconPath': chrome.extension.getURL('style/images/icons/Icon128.png')
     });
@@ -61,63 +61,87 @@ httpRequest(chrome.extension.getURL('content_scripts/quickSearch.html'), functio
     btn_cancel = bsbox.querySelector('.bs-box .cancel');
     btn_more = bsbox.querySelector('.bs-box .more');
 
+    // 改变背景色
+    bs.addEventListener('mousewheel', bswheelmove, false);
 
     // 处理 点击 shadowDom on Click 同时触发 bs 和 shadowDom click事件
     var shadowDomIsClick = false;
-    bsbox.addEventListener('click', function(event) {
+    bsbox.addEventListener('click', function (event) {
         shadowDomIsClick = true;
     });
-    bs.addEventListener('click', function(event) {
-        if (shadowDomIsClick) {
+    bs.addEventListener('click', function (event) {
+        if(shadowDomIsClick) {
             shadowDomIsClick = false;
             return;
         }
         event.preventDefault();
         togglebs('hide');
     });
-    bsbox.querySelector('.external').addEventListener('click', function(event) {
+    bsbox.querySelector('.external').addEventListener('click', function (event) {
         togglebs('hide');
     });
     // 下拉选项
-    bsbox.querySelector('.more').addEventListener('click', function(event) {
+    bsbox.querySelector('.more').addEventListener('click', function (event) {
         bstopbar.classList.add('extend');
     });
-    bsbox.querySelector('.drop-box').addEventListener('mouseleave', function(event) {
+    bsbox.querySelector('.drop-box').addEventListener('mouseleave', function (event) {
         bstopbar.classList.remove('extend');
     });
 
-    btn_search.addEventListener('click', function(event) {
+    btn_search.addEventListener('click', function (event) {
         toggleedit();
     });
 
-    btn_cancel.addEventListener('click', function(event) {
+    btn_cancel.addEventListener('click', function (event) {
         toggleedit();
-        if (bsinput.value) {
+        if(bsinput.value) {
             quickSearch_run(bsinput.value);
         }
     });
 
-    bsinput.addEventListener('focus', function(event) {
+    bsinput.addEventListener('focus', function (event) {
         this.select();
     });
 
-    change.addEventListener('click', function(event) {
+    change.addEventListener('click', function (event) {
         changeSearchEngine();
     });
 
-    bsform.addEventListener('submit', function(event) {
+    bsform.addEventListener('submit', function (event) {
         event.preventDefault();
-        if (bsinput.value === '') {
+        if(bsinput.value === '') {
             return false;
         }
         quickSearch_run(bsinput.value);
     });
 
-    window.onresize = function() {
+    window.onresize = function () {
         bscon.style.height = window.innerHeight - 40 + 'px';
     };
 
 });
+
+function bswheelmove(event) {
+    var delta = event.wheelDelta / 120;
+    var alpha = getBgAlpha(bs);
+    console.log(delta, alpha);
+    if(delta < 0 && alpha >= 1 || delta > 0 && alpha <= 0) {
+        return;
+    }
+    alpha = parseFloat(alpha - delta * 0.1).toFixed(1);
+    console.log(alpha);
+    bs.style.backgroundColor = 'rgba(0, 0, 0, ' + alpha + ')';
+}
+
+function getBgAlpha(dom) {
+    var style = window.getComputedStyle(dom);
+    var bgc = style.getPropertyValue('background-color');
+    if(bgc.indexOf('rgba') === -1) {
+        return 1;
+    }
+    var alpha = bgc.replace(/^.*,(.+)\)/, '$1');
+    return parseFloat(alpha);
+}
 
 function calcbsboxheight() {
     bscon.style.cssText = 'padding-top: 40px; position: absolute; left: 0; top: 0; width: 100%;';
@@ -127,8 +151,8 @@ function calcbsboxheight() {
 function httpRequest(url, callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
+    xhr.onreadystatechange = function () {
+        if(xhr.readyState === 4) {
             callback(xhr.responseText);
         }
     };
@@ -136,17 +160,17 @@ function httpRequest(url, callback) {
 }
 
 function toggleedit(status) {
-    if (bs.style.display !== 'block') {
+    if(bs.style.display !== 'block') {
         return;
     }
 
-    if (status === 'active') {
+    if(status === 'active') {
         bsform.classList.add('active');
         bsinput.focus();
-    } else if (status === 'disabled') {
+    } else if(status === 'disabled') {
         bsform.classList.remove('active');
     } else {
-        if (!bsform.classList.contains('active')) {
+        if(!bsform.classList.contains('active')) {
             bsform.classList.add('active');
             bsinput.focus();
         } else {
@@ -156,7 +180,7 @@ function toggleedit(status) {
 }
 
 function changeSearchEngine() {
-    if (bs.style.display !== 'block') {
+    if(bs.style.display !== 'block') {
         return;
     }
     quickSearch.curIndex = (quickSearch.curIndex + 1 < quickSearch.List.length) ? (quickSearch.curIndex + 1) : 0;
@@ -173,8 +197,8 @@ function togglebs(status) {
     bsinput.value = keyword;
     bsformcontent.innerHTML = keyword;
     window.getSelection().empty();
-    if (status === 'hide') {
-        if (bs.style.display === 'none') {
+    if(status === 'hide') {
+        if(bs.style.display === 'none') {
             return;
         }
 
@@ -184,7 +208,7 @@ function togglebs(status) {
         document.querySelector('body').classList.remove('ovh');
         document.querySelector('html').classList.remove('ovh');
     } else {
-        if (bs.style.display === 'block') {
+        if(bs.style.display === 'block') {
             return;
         }
 
@@ -196,11 +220,11 @@ function togglebs(status) {
 }
 
 function quickSearch_run(word) {
-    if (word) {
+    if(word) {
         keyword = word;
     }
 
-    if (!word && keyword && keyword === bsinput.value && keyword.match(/^[a-zA-Z\s']+$/)) {
+    if(!word && keyword && keyword === bsinput.value && keyword.match(/^[a-zA-Z\s']+$/)) {
         keyword = '翻译 ' + keyword;
     }
 
@@ -213,21 +237,21 @@ function quickSearch_run(word) {
     togglebs('show');
 }
 
-chrome.runtime.onMessage.addListener(function(message) {
-    if (message.word || message.word === '') {
+chrome.runtime.onMessage.addListener(function (message) {
+    if(message.word || message.word === '') {
         keyword = message.word;
     }
 
-    if (message.runSearch) {
+    if(message.runSearch) {
         quickSearch_run();
-    } else if (message.eidt) {
+    } else if(message.eidt) {
         toggleedit();
-    } else if (message.changeSearchEngine) {
+    } else if(message.changeSearchEngine) {
         changeSearchEngine();
-    } else if (message.togglebs) {
+    } else if(message.togglebs) {
         togglebs('hide');
-    } else if (message.esc) {
-        if (bstopbar.classList.contains('extend')) {
+    } else if(message.esc) {
+        if(bstopbar.classList.contains('extend')) {
             bstopbar.classList.remove('extend');
             return;
         }
