@@ -23,6 +23,7 @@ chrome.storage.sync.get('quickSearch', function (r) {
 			List: [{
 				'type': 'baidu',
 				'url': 'https://www.baidu.com/s?wd=',
+				// 'url': 'https://m.baidu.com/s?wd=',
 			}, {
 				'type': 'google',
 				'url': 'https://www.google.com/search?q='
