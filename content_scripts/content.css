@@ -144,12 +144,12 @@
 	height: 100%;
 	overflow: auto;
 }
-#BaiduISearch::shadow  .bs-box {
+#BaiduISearch /deep/  .bs-box {
 	min-width: 598px;
 }
-#BaiduISearch::shadow  .ctrl-box .min,
-#BaiduISearch::shadow  .ctrl-box .prev,
-#BaiduISearch::shadow  .ctrl-box .link {
+#BaiduISearch /deep/  .ctrl-box .min,
+#BaiduISearch /deep/  .ctrl-box .prev,
+#BaiduISearch /deep/  .ctrl-box .link {
 	display: none;
 }
 
