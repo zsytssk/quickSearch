@@ -1,13 +1,18 @@
 /* baidu */
-.baidu, .baidu body, .baidu #wrapper, .baidu .container_s {
-	min-width: 580px ! important;
-	width: 580px ! important;
-	overflow: auto;
+.baidu,
+.baidu body,
+.baidu #wrapper,
+.baidu .container_s {
+    min-width: 580px ! important;
+    width: 580px ! important;
+    overflow: auto;
 }
+
 .baidu #content_left,
 .baidu #page {
-	padding-left: 15px ! important;
+    padding-left: 15px ! important;
 }
+
 .baidu .head_nums_cont_outer,
 .baidu .hint_toprq_tips,
 .baidu #head,
@@ -19,28 +24,55 @@
 .baidu #foot,
 .baidu #page a:not(.n),
 .baidu #page strong {
-	display: none ! important;
+    display: none ! important;
 }
+
 .baidu body #page a.n,
 .baidu body #page a.n:hover {
-	border: none;
-	padding: 0 !important;
-	display: inline;
+    border: none;
+    padding: 0 !important;
+    display: inline;
 }
+
 .baidu body #page {
-	margin: 5px 0 5px 0;
+    margin: 5px 0 5px 0;
 }
+
 /* google */
+/*
+
+*/
+
+#msc {
+    height: auto !important;
+}
+
+#hdtb-sc {
+    height: 76px !important;
+}
+
+#hdtb-tls,
+.hdtb-mitem {
+    float: left;
+}
+
+#cnt {
+    overflow: hidden;
+}
+
 .srp #sfcnt {
-	display: none !important;
+    display: none !important;
 }
+
 #fbar {
-	height: 97px !important;
+    height: 97px !important;
 }
+
 /*bing*/
 #sb_form {
-	display: none !important;
+    display: none !important;
 }
+
 #b_content {
-	margin-top: 32px !important;
+    margin-top: 32px !important;
 }

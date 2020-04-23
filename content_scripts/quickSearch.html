@@ -1,40 +1,52 @@
-<div id='BaiduISearch' class="bs-overlay Min" style="display: none;">
-	<template id="BaiduISearchTemplate">
-		<style>
-		@import "chrome-extension://__MSG_@@extension_id__/style/plugin/font-awesome/css/font-awesome.css";
-		</style>
-		<div class="bs-box">
-			<div class="topbar">
-				<form class="bs-form">
-					<div class="fl ">
-						<div class="content" title=""></div>
-						<a class="cancel"><i class="fa fa-arrow-left"></i></a>
-						<input type="text" name="" id="" value="">
-					</div>
-					<div class="fr">
-						<a class="search"><i class="fa fa-search"></i></a>
-						<a class="more"><i class="fa fa-ellipsis-h"></i></a>
-					</div>
-				</form>
-				<div class="drop-box">
-					<ul>
-						<li><a class="external" target="_blank"><i class="fa fa-external-link"></i>弹出</a></li>
-						<li><a href="chrome-extension://__MSG_@@extension_id__/options.html" target="_blank" class="setting"><i class="fa fa-cog"></i>选项</a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="con">
-				<iframe src="" frameborder="0" id="BaiduISearchIframe"></iframe>
-			</div>
-			<div class="toolbar">
-				<a class="change"><i class="fa fa-refresh"></i></a>
-			</div>
-		</div>
-	</template>
-	<script>
-	var bs = document.querySelector('#BaiduISearch');
-	var shadow = bs.createShadowRoot();
-	shadow.appendChild(bs.querySelector('#BaiduISearchTemplate').content);
-	bs.removeChild(bs.querySelector('#BaiduISearchTemplate'));
-	</script>
+<div id="BaiduISearch" class="bs-overlay Min" style="display: none;">
+  <template id="BaiduISearchTemplate">
+    <style>
+      @import "chrome-extension://__MSG_@@extension_id__/style/plugin/font-awesome/css/font-awesome.css";
+      @import "chrome-extension://__MSG_@@extension_id__/style/plugin/font-awesome/css/content.css";
+    </style>
+    <div class="bs-box">
+      <div class="topbar">
+        <form class="bs-form">
+          <div class="fl">
+            <div class="content" title=""></div>
+            <a class="cancel"><i class="fa fa-arrow-left"></i></a>
+            <input type="text" name="" id="" value="" />
+          </div>
+          <div class="fr">
+            <a class="search"><i class="fa fa-search"></i></a>
+            <a class="more"><i class="fa fa-ellipsis-h"></i></a>
+          </div>
+        </form>
+        <div class="drop-box">
+          <ul>
+            <li>
+              <a class="external" target="_blank"
+                ><i class="fa fa-external-link"></i>弹出</a
+              >
+            </li>
+            <li>
+              <a
+                href="chrome-extension://__MSG_@@extension_id__/options.html"
+                target="_blank"
+                class="setting"
+                ><i class="fa fa-cog"></i>选项</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="con">
+        <iframe src="" frameborder="0" id="BaiduISearchIframe"></iframe>
+      </div>
+      <div class="toolbar">
+        <a class="change"><i class="fa fa-refresh"></i></a>
+      </div>
+    </div>
+  </template>
+  <script>
+    var bs = document.querySelector("#BaiduISearch");
+    var shadow = bs.attachShadow({ mode: "open" });
+    shadow.appendChild(bs.querySelector("#BaiduISearchTemplate").content);
+    bs.removeChild(bs.querySelector("#BaiduISearchTemplate"));
+  </script>
 </div>
