@@ -1,0 +1,62 @@
+{
+	"extends": ["tslint:latest", "tslint-config-prettier"],
+	"rules": {
+		"indent": [true, "tabs", 2],
+		"no-object-literal-type-assertion": true,
+		"one-variable-per-declaration": false,
+		"no-console": false,
+		"no-implicit-dependencies": [true, ["@app", "moment"]],
+		"no-submodule-imports": false,
+		"no-reference": true,
+		"quotemark": [true, "single", "avoid-escape", "jsx-double"],
+		"no-var-requires": true,
+		"no-any": [false, { "ignore-rest-args": true }],
+		"rules": { "class-name": true },
+		"trailing-comma": [
+			true,
+			{
+				"multiline": {
+					"objects": "ignore",
+					"arrays": "ignore",
+					"functions": "ignore",
+					"typeLiterals": "ignore"
+				},
+				"esSpecCompliant": true
+			}
+		],
+		"ordered-imports": [
+			true,
+			{
+				"module-source-path": "full",
+				"grouped-imports": true,
+				"groups": [
+					{
+						"name": "react",
+						"match": "^react.*",
+						"order": 1
+					}, {
+						"name": "redux",
+						"match": "^redux.*",
+						"order": 1
+					}, {
+						"name": "modules",
+						"match": "^@app/(components|util|redux).*",
+						"order": 3
+					}, {
+						"name": "relative",
+						"match": "^[.].*",
+						"order": 4
+					}, {
+						"name": "assets",
+						"match": "^@app/assets.*",
+						"order": 5
+					}, {
+						"name": "node_modules",
+						"match": "^([a-zA-Z]|@ant).*",
+						"order": 2
+					}
+		]
+			}
+		]
+	}
+}
