@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { SyncOutlined } from '@ant-design/icons';
+import SyncOutlined from '@ant-design/icons/SyncOutlined';
 import { UpdateSearchIndex } from '../contentStore/contentAction';
 
 export function ToolBar() {

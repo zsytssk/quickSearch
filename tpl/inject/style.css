@@ -38,6 +38,10 @@
     margin: 5px 0 5px 0;
 }
 
+.baidu .searchboxtop {
+    display: none;
+}
+
 /* google */
 /*
 

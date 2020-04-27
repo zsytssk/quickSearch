@@ -1,9 +1,9 @@
 {
-	"name": "quickSearch",
+	"name": "vto",
 	"author": "zsytssk",
 	"version": "0.1",
 	"manifest_version": 2,
-	"description": "open search engin in current page",
+	"description": "search keyword not leave page",
 	"icons": {
 		"16": "assets/images/icons/Icon16.png",
 		"48": "assets/images/icons/Icon48.png",
@@ -21,8 +21,8 @@
 		"*://*/*"
 	],
 	"background": {
-		"persistent": true,
-		"page": "background.html"
+		"scripts": ["background/main.js"],
+		"persistent": true
 	},
 	"options_page": "options/index.html",
 	"web_accessible_resources": ["options/index.html"],
@@ -30,7 +30,7 @@
 		{
 			"run_at": "document_start",
 			"all_frames": true,
-			"matches": ["*://*/*from=quickSearch*"],
+			"matches": ["*://*/*from=vto*"],
 			"css": ["inject/style.css"],
 			"js": ["inject/search.js"]
 		},

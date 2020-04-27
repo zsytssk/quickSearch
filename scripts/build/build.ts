@@ -1,66 +1,39 @@
-import webpack, { Stats } from 'webpack';
-import { webpackConfigFn } from '../webpack/webpack.config';
-import { log, logWarn, logError } from '../utils/log';
-import { init } from './state';
+import { listenLocal, afterBuild, buildProd, test } from './buildUtils';
 
-type BuildResult = {
-	stats: Stats;
-	warnings: string[];
+const type = process.argv.slice(2)[0] || 'buildMap';
+
+export const build_tips = `请选择要执行的命令\n 1.编译代码 + 发布(prod) \n > `;
+
+const buildMap = {
+	'1': async () => {
+		await buildProd();
+		await afterBuild();
+	},
+	'2': async () => {},
+	'3': async () => {},
 };
 
-function build() {
-	init('Test', 'content');
-	const compiler = webpack(webpackConfigFn());
-	return new Promise((resolve, reject) => {
-		compiler.watch({}, (err, stats) => {
-			let messages: Partial<Stats.ToJsonOutput>;
-			if (err) {
-				if (!err.message) {
-					return reject(err);
-				}
-
-				let errMessage = err.message;
-
-				// Add additional information for postcss errors
-				if (Object.prototype.hasOwnProperty.call(err, 'postcssNode')) {
-					errMessage += '\nCompileError: Begins at CSS selector ' + err['postcssNode'].selector;
-				}
-
-				messages = {
-					errors: [errMessage],
-					warnings: [],
-				};
-			} else {
-				messages = stats.toJson({ all: false, warnings: true, errors: true });
+const actionMap = {
+	async buildMap() {
+		for (let i = 0; i < 50; i++) {
+			const listen_type = await listenLocal();
+			console.time(`buildType:${listen_type}, costTime:`);
+			if (buildMap[listen_type]) {
+				await buildMap[listen_type]();
 			}
+			console.timeEnd(`buildType:${listen_type}, costTime:`);
+		}
+	},
+	async test() {
+		await test();
+	},
+};
 
-			if (messages.errors.length) {
-				// Only keep the first error. Others are often indicative
-				// of the same problem, but confuse the reader with noise.
-				if (messages.errors.length > 1) {
-					messages.errors.length = 1;
-				}
-				return reject(new Error(messages.errors.join('\n\n')));
-			}
-
-			return resolve({
-				stats,
-				warnings: messages.warnings,
-			});
-		});
-	}) as Promise<BuildResult>;
+export async function main() {
+	console.log(type);
+	console.time('AllCostTime');
+	await actionMap[type]();
+	console.timeEnd('AllCostTime');
 }
 
-build()
-	.then((data) => {
-		log(data.stats.toString());
-		if (data.warnings) {
-			logWarn(data.warnings);
-		}
-	})
-	.catch((err) => {
-		if (err && err.message) {
-			logError(err.message);
-		}
-		process.exit(1);
-	});
+main();

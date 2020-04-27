@@ -3,7 +3,7 @@ import { Setting } from '@app/utils/chromeUtils';
 
 const initState = {
 	keyword: 'test',
-	suffix: '&from=quickSearch',
+	suffix: '&from=vto',
 	setting: {} as Setting,
 };
 

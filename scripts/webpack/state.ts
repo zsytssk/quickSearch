@@ -15,6 +15,7 @@ type State = {
 };
 
 export const state = {
+	title: '设置',
 	entry: '',
 	output: {
 		path: '',
@@ -31,6 +32,10 @@ export function init(env: Env, type: Type) {
 	} else if (type === 'content') {
 		state.entry = paths.contentTs;
 		state.output.path = paths.contentBuild;
+		state.output.filename = '[name].js';
+	} else if (type === 'background') {
+		state.entry = paths.backgroundTs;
+		state.output.path = paths.backgroundBuild;
 		state.output.filename = '[name].js';
 	}
 }

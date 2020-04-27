@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+
 import { Panel } from './panel/panel';
 import { sendMessage, getUrl } from '@app/utils/chromeUtils';
-import { Provider } from 'react-redux';
 import './content.less';
 import { initStore } from './contentStore/contentStore';
 
-document.body.insertAdjacentHTML('beforeend', `<div id="quickSearch"></div>`);
+document.body.insertAdjacentHTML('beforeend', `<div id="vto"></div>`);
 
 sendMessage({
 	newIconPath: getUrl('assets/images/icons/Icon128.png'),
@@ -18,5 +19,5 @@ ReactDOM.render(
 			<Panel />
 		</React.StrictMode>
 	</Provider>,
-	document.getElementById('quickSearch'),
+	document.getElementById('vto'),
 );

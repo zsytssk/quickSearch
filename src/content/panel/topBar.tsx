@@ -4,6 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UpdateKeyword } from '../contentStore/contentAction';
 import { getUrl } from '@app/utils/chromeUtils';
 
+import LinkOutlined from '@ant-design/icons/LinkOutlined';
+import SettingFilled from '@ant-design/icons/SettingFilled';
+import CheckOutlined from '@ant-design/icons/CheckOutlined';
+import MoreOutlined from '@ant-design/icons/MoreOutlined';
+import SearchOutlined from '@ant-design/icons/SearchOutlined';
+import { searchUrl } from '../cusHook/searchUrl';
+
 export function TopBar() {
 	const [editable, setEditable] = useState(false);
 	const [searchWord, setSearchWord] = useState('');
@@ -24,6 +31,10 @@ export function TopBar() {
 	const toggleMore = () => {
 		setShowMore(!showMore);
 	};
+	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+		e.target.select();
+		setSearchWord(e.target.value);
+	};
 	const onSubmit = (
 		event: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLAnchorElement, MouseEvent>,
 	) => {
@@ -41,29 +52,29 @@ export function TopBar() {
 						{keyword}
 					</div>
 					<a className="confirm" onClick={onSubmit}>
-						确定
+						<CheckOutlined />
 					</a>
-					<input type="text" onChange={onChange} />
+					<input type="text" defaultValue={keyword} onFocus={handleFocus} onChange={onChange} />
 				</div>
 				<div className="fr">
 					<a className="search" onClick={toggleEditable}>
-						搜索
+						<SearchOutlined />
 					</a>
 					<a className="more" onClick={toggleMore}>
-						更多
+						<MoreOutlined />
 					</a>
 				</div>
 			</form>
 			<div className={classnames({ 'drop-box': true, extend: showMore })} onMouseLeave={toggleMore}>
 				<ul>
 					<li>
-						<a className="external" target="_blank">
-							<i className="fa fa-external-link"></i>弹出
+						<a className="external" href={searchUrl(false)} target="_blank">
+							<LinkOutlined />
 						</a>
 					</li>
 					<li>
 						<a href={optionUrl} target="_blank" className="setting">
-							<i className="fa fa-cog"></i>选项
+							<SettingFilled />
 						</a>
 					</li>
 				</ul>

@@ -16,9 +16,9 @@ export type Setting = typeof DefaultSetting;
 
 export function getSetting(): Promise<typeof DefaultSetting> {
 	return new Promise((resolve, reject) => {
-		chrome.storage.sync.get('quickSearch', async (r) => {
-			if (r.quickSearch) {
-				resolve(r.quickSearch);
+		chrome.storage.sync.get('vto', async (r) => {
+			if (r.vto) {
+				resolve(r.vto);
 			} else {
 				await setSetting(DefaultSetting);
 				resolve(DefaultSetting);
@@ -29,7 +29,7 @@ export function getSetting(): Promise<typeof DefaultSetting> {
 
 export function setSetting(setting: Setting): Promise<typeof DefaultSetting> {
 	return new Promise((resolve, reject) => {
-		chrome.storage.sync.set({ quickSearch: setting }, () => {
+		chrome.storage.sync.set({ vto: setting }, () => {
 			resolve();
 		});
 	});

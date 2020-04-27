@@ -12,9 +12,7 @@ export function detectShow() {
 			esc: boolean;
 			changeSearchEngine: boolean;
 		}) => {
-			if (message.word) {
-				setKeyword(message.word);
-			}
+			setKeyword(message.word);
 
 			if (message.runSearch) {
 				setShow(!show);
@@ -26,5 +24,5 @@ export function detectShow() {
 		};
 	}, [show, keyword]);
 
-	return [show, setShow] as [boolean, typeof setShow];
+	return [show, setShow, keyword] as [boolean, typeof setShow, string];
 }

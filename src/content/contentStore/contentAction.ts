@@ -1,20 +1,22 @@
+import { getSetting } from '@app/utils/chromeUtils';
 import { Dispatch } from 'redux';
 import { State } from './contentReducer';
-import { getSetting } from '@app/utils/chromeUtils';
 
 export const ACTIONS = {
 	UPDATE_SETTING: 'UPDATE_SETTING',
 	UPDATE_SEARCH_INDEX: 'UPDATE_SEARCH_INDEX',
 	UPDATE_KEYWORD: 'UPDATE_KEYWORD',
 };
+
 export type Action<T> = {
 	type: string;
 	data: T;
 };
+
 export const UpdateKeyword = (keyword: string) => {
 	return {
 		type: ACTIONS.UPDATE_KEYWORD,
-		data: keyword,
+		data: keyword || 'I love you!',
 	} as Action<string>;
 };
 
