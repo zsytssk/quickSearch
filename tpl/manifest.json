@@ -1,0 +1,73 @@
+{
+	"name": "quickSearch",
+	"author": "zsytssk",
+	"version": "0.1",
+	"manifest_version": 2,
+	"description": "open search engin in current page",
+	"icons": {
+		"16": "assets/images/icons/Icon16.png",
+		"48": "assets/images/icons/Icon48.png",
+		"128": "assets/images/icons/Icon128.png"
+	},
+	"browser_action": {
+		"default_icon": "assets/images/icons/Icon128disabled.png"
+	},
+	"permissions": [
+		"storage",
+		"contextMenus",
+		"webRequest",
+		"webRequestBlocking",
+		"debugger",
+		"*://*/*"
+	],
+	"background": {
+		"persistent": true,
+		"page": "background.html"
+	},
+	"options_page": "options/index.html",
+	"web_accessible_resources": ["options/index.html"],
+	"content_scripts": [
+		{
+			"run_at": "document_start",
+			"all_frames": true,
+			"matches": ["*://*/*from=quickSearch*"],
+			"css": ["inject/style.css"],
+			"js": ["inject/search.js"]
+		},
+		{
+			"run_at": "document_idle",
+			"matches": ["*://*/*"],
+			"exclude_globs": ["chrome://newtab"],
+			"js": ["content/main.js"]
+		}
+	],
+	"minimum_chrome_version": "81",
+	"commands": {
+		"toggle-edit": {
+			"suggested_key": {
+				"windows": "Alt+E",
+				"mac": "Alt+E",
+				"chromeos": "Alt+E",
+				"linux": "Alt+E"
+			},
+			"description": "toggle-edit"
+		},
+		"change-SearchEngine": {
+			"suggested_key": {
+				"windows": "Alt+C",
+				"mac": "Alt+C",
+				"chromeos": "Alt+C",
+				"linux": "Alt+C"
+			},
+			"description": "change-SearchEngine"
+		},
+		"_execute_browser_action": {
+			"suggested_key": {
+				"windows": "Alt+Q",
+				"mac": "Alt+Q",
+				"chromeos": "Alt+Q",
+				"linux": "Alt+Q"
+			}
+		}
+	}
+}
