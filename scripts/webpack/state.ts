@@ -5,6 +5,8 @@ export type Type = 'content' | 'options' | 'background';
 
 type State = {
 	env: Env;
+	/** webpack-bundle-analyzer */
+	analyze: boolean;
 	type: Type;
 	entry: string;
 	output: {

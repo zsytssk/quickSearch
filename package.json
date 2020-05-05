@@ -1,6 +1,6 @@
 {
 	"name": "react-clean",
-	"version": "1.0.0",
+	"version": "0.0.2",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
@@ -12,17 +12,14 @@
 	"license": "ISC",
 	"dependencies": {
 		"@ant-design/icons": "^4.0.6",
-		"@types/chrome": "0.0.106",
+		"@types/chrome": "0.0.107",
 		"chalk": "^4.0.0",
 		"classnames": "^2.2.6",
 		"less": "^3.11.1",
 		"raw-loader": "^4.0.1",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
-		"react-redux": "^7.2.0",
-		"react-shadow": "^18.0.1",
-		"redux": "^4.0.5",
-		"redux-thunk": "^2.3.0",
+		"react-shadow": "^18.1.0",
 		"to-string-loader": "^1.1.6",
 		"typescript": "^3.8.3",
 		"webpack-bundle-analyzer": "^3.7.0"

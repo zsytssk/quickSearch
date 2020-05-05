@@ -1,16 +1,15 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
 import SyncOutlined from '@ant-design/icons/SyncOutlined';
-import { UpdateSearchIndex } from '../contentStore/contentAction';
+import React from 'react';
+import { getState } from '../state/state';
 
 export function ToolBar() {
-	const dispatch = useDispatch();
+	const [state] = getState();
 	return (
 		<div className="toolbar">
 			<a
 				className="change"
 				onClick={() => {
-					dispatch(UpdateSearchIndex());
+					state.updateSearchIndex(state.setting.curIndex + 1);
 				}}
 			>
 				<SyncOutlined />

@@ -1,8 +1,22 @@
-import { listenLocal, afterBuild, buildProd, test, buildTest } from './buildUtils';
+import {
+	listenLocal,
+	afterBuild,
+	buildProd,
+	test,
+	buildTest,
+	setAnalyze,
+	buildTestCon,
+} from './buildUtils';
 
 const type = process.argv.slice(2)[0] || 'buildMap';
 
-export const build_tips = `请选择要执行的命令\n 1.编译代码 + 发布(prod) \n 2.编译代码 + 发布(test) \n > `;
+export const build_tip_arr = [
+	'1.编译代码 + 发布(prod)',
+	'2.编译代码 + 发布(test)',
+	'3.编译代码 + 发布 + analyze(prod)',
+	'4.编译代码 + 发布 + analyze(test)',
+	'5.编译代码 content (test)',
+];
 
 const buildMap = {
 	'1': async () => {
@@ -13,7 +27,19 @@ const buildMap = {
 		await buildTest();
 		await afterBuild();
 	},
-	'3': async () => {},
+	'3': async () => {
+		setAnalyze(true);
+		await buildProd();
+		await afterBuild();
+	},
+	'4': async () => {
+		setAnalyze(true);
+		await buildProd();
+		await afterBuild();
+	},
+	'5': async () => {
+		await buildTestCon();
+	},
 };
 
 const actionMap = {

@@ -15,13 +15,20 @@ const htmlWebpackPlugin = () => {
 };
 
 export const createPlugins = () => {
-	const { type } = state;
+	const { type, analyze } = state;
+	const result = [];
+
 	if (type === 'content') {
-		return [new CleanWebpackPlugin(), new BundleAnalyzerPlugin()];
-		// return [new CleanWebpackPlugin()];
+		result.push(new CleanWebpackPlugin());
+		if (analyze) {
+			result.push(new BundleAnalyzerPlugin());
+		}
+		result.push(new CleanWebpackPlugin());
+	} else if (type === 'background') {
+		result.push(new CleanWebpackPlugin());
+	} else {
+		result.push(htmlWebpackPlugin(), new CleanWebpackPlugin());
 	}
-	if (type === 'background') {
-		return [new CleanWebpackPlugin()];
-	}
-	return [htmlWebpackPlugin(), new CleanWebpackPlugin()];
+
+	return result;
 };

@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../contentStore/contentReducer';
 import { searchUrl } from '../cusHook/searchUrl';
 
 type Props = {

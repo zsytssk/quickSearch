@@ -1,7 +1,5 @@
 import React, { ChangeEvent, useState } from 'react';
 import classnames from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
-import { UpdateKeyword } from '../contentStore/contentAction';
 import { getUrl } from '@app/utils/chromeUtils';
 
 import LinkOutlined from '@ant-design/icons/LinkOutlined';
@@ -10,18 +8,15 @@ import CheckOutlined from '@ant-design/icons/CheckOutlined';
 import MoreOutlined from '@ant-design/icons/MoreOutlined';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import { searchUrl } from '../cusHook/searchUrl';
+import { getState } from '../state/state';
 
 export function TopBar() {
+	const [state] = getState();
 	const [editable, setEditable] = useState(false);
 	const [searchWord, setSearchWord] = useState('');
 	const [showMore, setShowMore] = useState(false);
-
+	const { keyword } = state;
 	const optionUrl = getUrl('options/index.html');
-	const dispatch = useDispatch();
-	const { keyword } = useSelector((state) => {
-		const { searchUrl, keyword } = state;
-		return { searchUrl, keyword };
-	});
 	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setSearchWord(e.target.value);
 	};
@@ -39,7 +34,7 @@ export function TopBar() {
 		event: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLAnchorElement, MouseEvent>,
 	) => {
 		event.preventDefault();
-		dispatch(UpdateKeyword(searchWord));
+		state.updateKeyword(searchWord);
 		toggleEditable();
 		return false;
 	};

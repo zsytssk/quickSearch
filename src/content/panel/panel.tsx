@@ -1,19 +1,23 @@
 import style from '!css-loader!less-loader!./panel.less';
 import React, { MouseEvent, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import root from 'react-shadow';
-import { UpdateKeyword, UpdateSetting } from '../contentStore/contentAction';
 import { alphaChange, toggleBodyStyle } from '../contentUtils';
 import { detectShow } from '../cusHook/detectShow';
 import { ToolBar } from './toolBar';
 import { TopBar } from './topBar';
 import { Box } from './box';
+import { getState } from '../state/state';
+import { getSetting } from '@app/utils/chromeUtils';
 
 export function Panel() {
+	const [state] = getState();
 	const [show, setShow, keyword] = detectShow();
-	const dispatch = useDispatch();
 
-	UpdateSetting(dispatch);
+	useEffect(() => {
+		getSetting().then((setting) => {
+			state.updateSearchSetting(setting);
+		});
+	}, []);
 
 	const toggleShow = () => {
 		const next_show = !show;
@@ -25,7 +29,7 @@ export function Panel() {
 	}, [show]);
 
 	useEffect(() => {
-		dispatch(UpdateKeyword(keyword));
+		state.updateKeyword(keyword);
 	}, [keyword]);
 
 	useEffect(() => {
