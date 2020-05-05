@@ -6,10 +6,8 @@ import { state } from './state';
 import { paths } from './paths';
 
 const htmlWebpackPlugin = () => {
-	const { title } = state;
 	return new HtmlWebpackPlugin({
 		template: paths.optionsHtml,
-		title,
 		inject: true,
 	});
 };

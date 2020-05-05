@@ -17,7 +17,6 @@ type State = {
 };
 
 export const state = {
-	title: '设置',
 	entry: '',
 	output: {
 		path: '',
