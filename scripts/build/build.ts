@@ -1,15 +1,18 @@
-import { listenLocal, afterBuild, buildProd, test } from './buildUtils';
+import { listenLocal, afterBuild, buildProd, test, buildTest } from './buildUtils';
 
 const type = process.argv.slice(2)[0] || 'buildMap';
 
-export const build_tips = `请选择要执行的命令\n 1.编译代码 + 发布(prod) \n > `;
+export const build_tips = `请选择要执行的命令\n 1.编译代码 + 发布(prod) \n 2.编译代码 + 发布(test) \n > `;
 
 const buildMap = {
 	'1': async () => {
 		await buildProd();
 		await afterBuild();
 	},
-	'2': async () => {},
+	'2': async () => {
+		await buildTest();
+		await afterBuild();
+	},
 	'3': async () => {},
 };
 

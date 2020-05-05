@@ -22,16 +22,26 @@ export function start(env: Env, type: Type) {
 	});
 }
 
+export function build(env: Env, type: Type) {
+	init(env, type);
+	const compiler = webpack(webpackConfigFn());
+	let fn: (handler: Handler) => void;
+	if (env !== 'Prod') {
+		fn = compiler.watch.bind(compiler, {});
+	} else {
+		fn = compiler.run.bind(compiler);
+	}
+	return waitBuild(fn);
+}
+
+type Handler = (err: Error, stats: Stats) => void;
 type BuildResult = {
 	stats: Stats;
 	warnings: string[];
 };
-
-export function build(env: Env, type: Type) {
-	init(env, type);
-	const compiler = webpack(webpackConfigFn());
-	const task = new Promise((resolve, reject) => {
-		compiler.run((err, stats) => {
+function waitBuild(build_fn: (handler: Handler) => void) {
+	const task: Promise<BuildResult> = new Promise((resolve, reject) => {
+		build_fn((err: Error, stats: Stats) => {
 			let messages: Partial<Stats.ToJsonOutput>;
 			if (err) {
 				if (!err.message) {
@@ -61,13 +71,12 @@ export function build(env: Env, type: Type) {
 				}
 				return reject(new Error(messages.errors.join('\n\n')));
 			}
-
 			return resolve({
 				stats,
 				warnings: messages.warnings,
 			});
 		});
-	}) as Promise<BuildResult>;
+	});
 
 	return task
 		.then((data) => {

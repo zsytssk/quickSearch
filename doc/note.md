@@ -1,5 +1,13 @@
 - @ques 'https://www.google.com/search?q=test&from=quickSearch' in a frame because it set 'X-Frame-Options' to 'sameorigin'.
 
+- @ques 发布 edge 插件...
+
+- todo
+  - remove redux
+  - 百度自定义样式
+  - 添加搜索页面
+  - 添加 icon...
+
 ## 2020-04-26 20:24:27
 
 - @page options | background | content
@@ -23,8 +31,6 @@
 - @ques 可以将所有的代码全部放到 react 中, 顶级的 dom 只是要给容器...
 
 ## 2020-04-23 18:32:20
-
-- @ques 能不能用 react native 做
 
 - @ques 可以添加搜索引擎...
 

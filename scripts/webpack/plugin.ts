@@ -17,8 +17,8 @@ const htmlWebpackPlugin = () => {
 export const createPlugins = () => {
 	const { type } = state;
 	if (type === 'content') {
-		// return [new CleanWebpackPlugin(), new BundleAnalyzerPlugin()];
-		return [new CleanWebpackPlugin()];
+		return [new CleanWebpackPlugin(), new BundleAnalyzerPlugin()];
+		// return [new CleanWebpackPlugin()];
 	}
 	if (type === 'background') {
 		return [new CleanWebpackPlugin()];
