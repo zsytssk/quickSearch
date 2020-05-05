@@ -3,10 +3,13 @@
 - @ques 发布 edge 插件...
 
 - todo
+
   - remove redux
   - 百度自定义样式
   - 添加搜索页面
   - 添加 icon...
+
+- @todo 读取 packge.json 版本号
 
 ## 2020-04-26 20:24:27
 
