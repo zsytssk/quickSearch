@@ -51,6 +51,9 @@ export async function buildProd() {
 export async function buildTestCon() {
 	await build('Test', 'content');
 }
+export async function buildTestOptions() {
+	await build('Test', 'options');
+}
 
 export async function afterBuild() {
 	await cp(paths.tpl, paths.appBuild);

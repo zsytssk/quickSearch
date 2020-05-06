@@ -1,15 +1,28 @@
+- @todo 搜索列表功能
+
+  - 删除 编辑 添加 排序...
+
+- @ques 为什么 options 页面 无法 watch
+
+## 2020-05-06 09:50:01
+
+- @ques
+
 - @ques 'https://www.google.com/search?q=test&from=quickSearch' in a frame because it set 'X-Frame-Options' to 'sameorigin'.
 
 - @ques 发布 edge 插件...
 
 - todo
 
-  - remove redux
-  - 百度自定义样式
   - 添加搜索页面
   - 添加 icon...
 
 - @todo 读取 packge.json 版本号
+
+### end
+
+- remove redux
+- 百度自定义样式
 
 ## 2020-04-26 20:24:27
 

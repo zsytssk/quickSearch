@@ -21,7 +21,6 @@ export const createPlugins = () => {
 		if (analyze) {
 			result.push(new BundleAnalyzerPlugin());
 		}
-		result.push(new CleanWebpackPlugin());
 	} else if (type === 'background') {
 		result.push(new CleanWebpackPlugin());
 	} else {

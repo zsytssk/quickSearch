@@ -1,5 +1,5 @@
 export const cssLoader = {
-	test: /(\.less)$/,
+	test: /\.(css|less)$/i,
 	use: [
 		'style-loader',
 		{

@@ -4,7 +4,6 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start": "ts-node --project ./scripts/tsconfig.json --files ./scripts/build/start.ts",
 		"build": "ts-node --project ./scripts/tsconfig.json --files ./scripts/build/build.ts"
 	},
 	"keywords": [],
@@ -13,6 +12,7 @@
 	"dependencies": {
 		"@ant-design/icons": "^4.0.6",
 		"@types/chrome": "0.0.107",
+		"antd": "^4.2.0",
 		"chalk": "^4.0.0",
 		"classnames": "^2.2.6",
 		"less": "^3.11.1",
