@@ -41,12 +41,12 @@ export function buildTest() {
 }
 
 export async function buildProd() {
-	console.log(`build options`);
-	await build('Prod', 'options');
-	console.log(`build content`);
-	await build('Prod', 'content');
 	console.log(`build background`);
 	await build('Prod', 'background');
+	console.log(`build content`);
+	await build('Prod', 'content');
+	console.log(`build options`);
+	await build('Prod', 'options');
 }
 export async function buildTestCon() {
 	await build('Test', 'content');

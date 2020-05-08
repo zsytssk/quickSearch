@@ -3,7 +3,9 @@ import WebpackDevServer from 'webpack-dev-server';
 import { webpackConfigFn } from './webpack.config';
 import { devServerConfig } from './devServer';
 import { log, logWarn, logError } from '../utils/log';
+import { waitProcessExit } from '../zutil/utils/utils';
 import { init, Env, Type } from './state';
+import { Subscriber, Observable } from 'rxjs';
 
 export function start(env: Env, type: Type) {
 	const compiler = webpack(webpackConfigFn());
@@ -22,30 +24,25 @@ export function start(env: Env, type: Type) {
 	});
 }
 
-export function build(env: Env, type: Type) {
+export async function build(env: Env, type: Type) {
 	init(env, type);
 	const compiler = webpack(webpackConfigFn());
-	let fn: (handler: Handler) => void;
-	if (env !== 'Prod') {
-		fn = compiler.watch.bind(compiler, {});
-	} else {
-		fn = compiler.run.bind(compiler);
-	}
-	return waitBuild(fn);
+	const is_watch = env !== 'Prod' ? true : false;
+	await waitBuild(compiler, is_watch);
 }
 
-type Handler = (err: Error, stats: Stats) => void;
 type BuildResult = {
 	stats: Stats;
 	warnings: string[];
 };
-function waitBuild(build_fn: (handler: Handler) => void) {
-	const task: Promise<BuildResult> = new Promise((resolve, reject) => {
-		build_fn((err: Error, stats: Stats) => {
+
+function waitBuild(compiler: webpack.Compiler, is_watch: boolean) {
+	const observer = new Observable((subscriber: Subscriber<BuildResult>) => {
+		const handler = (err: Error, stats: Stats) => {
 			let messages: Partial<Stats.ToJsonOutput>;
 			if (err) {
 				if (!err.message) {
-					return reject(err);
+					return subscriber.error(err);
 				}
 
 				let errMessage = err.message;
@@ -69,26 +66,45 @@ function waitBuild(build_fn: (handler: Handler) => void) {
 				if (messages.errors.length > 1) {
 					messages.errors.length = 1;
 				}
-				return reject(new Error(messages.errors.join('\n\n')));
+				return subscriber.error(new Error(messages.errors.join('\n\n')));
 			}
-			return resolve({
+
+			return subscriber.next({
 				stats,
 				warnings: messages.warnings,
 			});
-		});
+		};
+
+		if (is_watch) {
+			compiler.watch({}, handler);
+		} else {
+			compiler.run(handler);
+		}
 	});
 
-	return task
-		.then((data) => {
-			log(data.stats.toString());
-			if (data.warnings) {
-				logWarn(data.warnings);
-			}
-		})
-		.catch((err) => {
-			if (err && err.message) {
-				logError(err.message);
-			}
-			process.exit(1);
+	const then_fn = (data) => {
+		log(data.stats.toString());
+		if (data.warnings) {
+			logWarn(data.warnings);
+		}
+	};
+	const catch_fn = (err) => {
+		if (err && err.message) {
+			logError(err.message);
+		}
+		process.exit();
+	};
+
+	if (!is_watch) {
+		return new Promise((resolve, reject) => {
+			const subscribe = observer.subscribe((data) => {
+				then_fn(data);
+				resolve(data);
+				subscribe.unsubscribe();
+			});
 		});
+	} else {
+		observer.subscribe(then_fn, catch_fn);
+		return waitProcessExit();
+	}
 }

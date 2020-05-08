@@ -20,6 +20,7 @@
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
 		"react-shadow": "^18.1.0",
+		"rxjs": "^6.5.5",
 		"to-string-loader": "^1.1.6",
 		"typescript": "^3.8.3",
 		"webpack-bundle-analyzer": "^3.7.0"

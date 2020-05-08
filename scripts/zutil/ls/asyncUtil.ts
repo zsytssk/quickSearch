@@ -86,3 +86,26 @@ export function sleep(time: number) {
         }, time);
     });
 }
+export function isEmpty(dirname: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        fs.readdir(dirname, (err, files) => {
+            if (err) {
+                reject(err);
+            } else {
+                if (!files.length) {
+                    return resolve(true);
+                }
+                resolve(false);
+            }
+        });
+    });
+}
+
+export async function waitFolderEmpty(dir: string): Promise<any> {
+    const is_empty = await isEmpty(dir);
+    if (is_empty) {
+        return true;
+    }
+    await sleep(0.5);
+    return await waitFolderEmpty(dir);
+}

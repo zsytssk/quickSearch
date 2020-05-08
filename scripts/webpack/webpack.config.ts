@@ -7,7 +7,7 @@ import { state } from './state';
 export const webpackConfigFn = () => {
 	const { env, entry, output } = state;
 	const mode: Configuration['mode'] = env === 'Prod' ? 'production' : 'development';
-	const devtool: webpack.Options.Devtool = env === 'Prod' ? 'source-map' : false;
+	const devtool: webpack.Options.Devtool = env === 'Prod' ? false : 'source-map';
 
 	return {
 		devtool,

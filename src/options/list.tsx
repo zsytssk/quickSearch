@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Setting, getSetting, setSetting } from '@app/utils/chromeUtils';
 
+alert(1);
 export function List() {
 	const [state, setState] = useState<Setting>();
 
