@@ -32,24 +32,31 @@ export async function build(env: Env, type: Type) {
 }
 
 type BuildResult = {
-	stats: Stats;
-	warnings: string[];
+	type: 'error' | 'success';
+	data?: {
+		stats: Stats;
+		warnings: string[];
+	};
+	error?: Error;
 };
 
 function waitBuild(compiler: webpack.Compiler, is_watch: boolean) {
 	const observer = new Observable((subscriber: Subscriber<BuildResult>) => {
-		const handler = (err: Error, stats: Stats) => {
+		const handler = (error: Error, stats: Stats) => {
 			let messages: Partial<Stats.ToJsonOutput>;
-			if (err) {
-				if (!err.message) {
-					return subscriber.error(err);
+			if (error) {
+				if (!error.message) {
+					return subscriber.next({
+						type: 'error',
+						error,
+					});
 				}
 
-				let errMessage = err.message;
+				let errMessage = error.message;
 
 				// Add additional information for postcss errors
-				if (Object.prototype.hasOwnProperty.call(err, 'postcssNode')) {
-					errMessage += '\nCompileError: Begins at CSS selector ' + err['postcssNode'].selector;
+				if (Object.prototype.hasOwnProperty.call(error, 'postcssNode')) {
+					errMessage += '\nCompileError: Begins at CSS selector ' + error['postcssNode'].selector;
 				}
 
 				messages = {
@@ -66,12 +73,18 @@ function waitBuild(compiler: webpack.Compiler, is_watch: boolean) {
 				if (messages.errors.length > 1) {
 					messages.errors.length = 1;
 				}
-				return subscriber.error(new Error(messages.errors.join('\n\n')));
+				return subscriber.next({
+					type: 'error',
+					error: new Error(messages.errors.join('\n\n')),
+				});
 			}
 
 			return subscriber.next({
-				stats,
-				warnings: messages.warnings,
+				type: 'success',
+				data: {
+					stats,
+					warnings: messages.warnings,
+				},
 			});
 		};
 
@@ -82,17 +95,15 @@ function waitBuild(compiler: webpack.Compiler, is_watch: boolean) {
 		}
 	});
 
-	const then_fn = (data) => {
+	const then_fn = (res: BuildResult) => {
+		const { data, type, error } = res;
+		if (type === 'error') {
+			return logError(error);
+		}
 		log(data.stats.toString());
 		if (data.warnings) {
 			logWarn(data.warnings);
 		}
-	};
-	const catch_fn = (err) => {
-		if (err && err.message) {
-			logError(err.message);
-		}
-		process.exit();
 	};
 
 	if (!is_watch) {
@@ -104,7 +115,7 @@ function waitBuild(compiler: webpack.Compiler, is_watch: boolean) {
 			});
 		});
 	} else {
-		observer.subscribe(then_fn, catch_fn);
+		observer.subscribe(then_fn);
 		return waitProcessExit();
 	}
 }
