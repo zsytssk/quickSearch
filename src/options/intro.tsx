@@ -2,9 +2,6 @@ import React from 'react';
 import { setSetting } from '../utils/chromeUtils';
 
 export function Intro() {
-	const onClear = (e) => {
-		setSetting('' as any);
-	};
 	return (
 		<div>
 			<div className="help-list">
@@ -26,7 +23,6 @@ export function Intro() {
 					</li>
 				</ul>
 			</div>
-			<button onClick={onClear}>clear</button>
 		</div>
 	);
 }

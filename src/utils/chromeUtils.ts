@@ -13,6 +13,7 @@ const DefaultSetting = {
 };
 
 export type Setting = typeof DefaultSetting;
+export type SettingItem = Setting['list'][0];
 
 export function getSetting(): Promise<typeof DefaultSetting> {
 	return new Promise((resolve, reject) => {

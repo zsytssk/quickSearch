@@ -116,7 +116,8 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 	// Request filter
 	{
 		// Modify the headers for these pages
-		urls: ['*://*.google.com/*from=vto*'],
+		// urls: ['*://*.google.com/*from=vto*'],
+		urls: ['*://*/*from=vto*'],
 		// In the main window and frames
 		types: ['main_frame', 'sub_frame'],
 	},

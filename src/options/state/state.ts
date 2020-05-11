@@ -21,18 +21,18 @@ class StateModel extends EventCom {
 let state = new StateModel();
 export function getState() {
 	const [_state, setState] = useState(state);
-	const [changeIndex, setChangeIndex] = useState(0);
+	const [change_index, setChangeIndex] = useState(0);
 
 	useEffect(() => {
 		const fn = () => {
 			setState(state);
-			setChangeIndex(changeIndex + 1);
+			setChangeIndex(change_index + 1);
 		};
 		state.on(StateEvent.Change, fn);
 		return () => {
 			state.off(StateEvent.Change, fn);
 		};
-	}, [changeIndex]);
+	}, [change_index]);
 
-	return [_state] as [StateModel];
+	return [_state, change_index] as [StateModel, number];
 }
