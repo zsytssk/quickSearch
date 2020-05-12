@@ -4,7 +4,6 @@ import { Intro } from './intro';
 import { Setting } from './setting/setting';
 
 import './option.less';
-import 'antd/dist/antd.css';
 
 ReactDOM.render(
 	<React.StrictMode>

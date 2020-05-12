@@ -1,21 +1,27 @@
-export const cssLoader = {
-	test: /\.(css|less)$/i,
-	use: [
-		'style-loader',
-		{
-			loader: 'css-loader',
-			options: {
-				sourceMap: true,
-				modules: { auto: true },
+import { state } from './state';
+
+export const cssLoaderFn = function () {
+	const { env } = state;
+	const sourceMap = env !== 'Prod';
+	return {
+		test: /\.(css|less)$/i,
+		use: [
+			'style-loader',
+			{
+				loader: 'css-loader',
+				options: {
+					sourceMap,
+					modules: { auto: true },
+				},
 			},
-		},
-		{
-			loader: 'less-loader',
-			options: {
-				sourceMap: true,
+			{
+				loader: 'less-loader',
+				options: {
+					sourceMap,
+				},
 			},
-		},
-	],
+		],
+	};
 };
 
 export const fileLoader = {

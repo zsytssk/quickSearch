@@ -27,7 +27,8 @@ export function start(env: Env, type: Type) {
 export async function build(env: Env, type: Type) {
 	init(env, type);
 	const compiler = webpack(webpackConfigFn());
-	const is_watch = env !== 'Prod' ? true : false;
+	const is_watch = true;
+	// const is_watch = env !== 'Prod' ? true : false;
 	await waitBuild(compiler, is_watch);
 }
 

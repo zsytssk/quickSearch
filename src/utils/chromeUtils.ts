@@ -1,10 +1,12 @@
 const DefaultSetting = {
 	list: [
 		{
+			id: 'default1',
 			name: 'baidu',
 			url: 'https://www.baidu.com/s?wd=',
 		},
 		{
+			id: 'default2',
 			name: 'google',
 			url: 'https://www.google.com/search?q=',
 		},

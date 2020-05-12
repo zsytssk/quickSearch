@@ -7,6 +7,7 @@ import {
 	setAnalyze,
 	buildTestCon,
 	buildTestOptions,
+	buildProdOptions,
 } from './buildUtils';
 
 const type = process.argv.slice(2)[0] || 'buildMap';
@@ -15,9 +16,9 @@ export const build_tip_arr = [
 	'1.编译代码 + 发布(prod)',
 	'2.编译代码 + 发布(test)',
 	'3.编译代码 + 发布 + analyze(prod)',
-	'4.编译代码 + 发布 + analyze(test)',
 	'5.编译代码 content (test)',
 	'6.编译代码 options (test)',
+	'7.编译代码 options analyze(test)',
 ];
 
 const buildMap = {
@@ -44,6 +45,10 @@ const buildMap = {
 	},
 	'6': async () => {
 		await buildTestOptions();
+	},
+	'7': async () => {
+		setAnalyze(true);
+		await buildProdOptions();
 	},
 };
 

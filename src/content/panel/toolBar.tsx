@@ -9,7 +9,7 @@ export function ToolBar() {
 			<a
 				className="change"
 				onClick={() => {
-					state.updateSearchIndex(state.setting.curIndex + 1);
+					state.updateSearchIndex();
 				}}
 			>
 				<SyncOutlined />

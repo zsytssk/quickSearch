@@ -13,18 +13,20 @@ const htmlWebpackPlugin = () => {
 };
 
 export const createPlugins = () => {
-	const { type, analyze } = state;
+	const { type, analyze, env } = state;
 	const result = [];
 
 	if (type === 'content') {
 		result.push(new CleanWebpackPlugin());
-		if (analyze) {
-			result.push(new BundleAnalyzerPlugin());
-		}
-	} else if (type === 'background') {
+	} else if (type === 'options') {
+		result.push(htmlWebpackPlugin());
+	}
+
+	if (analyze) {
+		result.push(new BundleAnalyzerPlugin());
+	}
+	if (env === 'Prod') {
 		result.push(new CleanWebpackPlugin());
-	} else {
-		result.push(htmlWebpackPlugin(), new CleanWebpackPlugin());
 	}
 
 	return result;

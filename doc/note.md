@@ -5,6 +5,14 @@
 
 - @ques option.html 经常丢失...
 
+- @ques 要不要自己写一个类似 antd 的东西
+
+  - 精简 很小 只用来写逻辑...
+
+- @ques 有没有简单的 svgicon 库
+
+- @todo ts remote key from object
+
 ## 2020-05-09 09:29:39
 
 - @ques 错误无法进行下一个
