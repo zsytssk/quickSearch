@@ -196,31 +196,55 @@
 	position: absolute;
 	bottom: 15px;
 	right: 15px;
-	padding: 5px;
 	cursor: pointer;
 	text-align: center;
-}
+	height: 43px;
+	line-height: 43px;
 
-.bs-box .toolbar a {
-	display: block;
-	padding: 10px;
-	margin-top: 5px;
-	border-radius: 30px;
-	font-size: 23px;
-	color: #08c;
-	line-height: 1;
-}
-.bs-box .toolbar a span {
-	vertical-align: text-top;
-}
+	a {
+		display: block;
+		padding: 0 10px;
+		margin-top: 5px;
+		font-size: 23px;
+		color: #08c;
 
-.bs-box .toolbar i {
-	font-size: 30px;
-	vertical-align: middle;
-	color: #000;
-}
+		&:hover {
+			background-color: #eee;
+			box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+		}
 
-.bs-box .toolbar a:hover {
-	background-color: #eee;
-	box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+		span {
+			vertical-align: text-top;
+		}
+
+		i {
+			font-size: 30px;
+			vertical-align: middle;
+			color: #000;
+		}
+	}
+	.extend {
+		position: absolute;
+		justify-content: left;
+		align-items: flex-end;
+		top: 0;
+		right: 40px;
+		display: none;
+		background-color: #eee;
+		box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+
+		.item {
+			width: 100px;
+			height: 43px;
+			line-height: 43px;
+
+			&:not(:last-child) {
+				border-right: 1px solid #333;
+			}
+		}
+	}
+
+	&:hover .extend {
+		display: flex;
+	}
 }

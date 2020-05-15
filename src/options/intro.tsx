@@ -1,5 +1,4 @@
 import React from 'react';
-import { setSetting } from '../utils/chromeUtils';
 
 export function Intro() {
 	return (

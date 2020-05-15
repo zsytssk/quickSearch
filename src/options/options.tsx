@@ -7,7 +7,6 @@ import './option.less';
 
 ReactDOM.render(
 	<React.StrictMode>
-		<Intro />
 		<Setting />
 	</React.StrictMode>,
 	document.getElementById('root'),

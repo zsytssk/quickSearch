@@ -9,10 +9,17 @@ class StateModel extends EventCom {
 	public list: Setting['list'];
 	public cur_index: number;
 	public updateSearchSetting(setting: Setting) {
-		const { list, curIndex } = setting;
+		const { list } = setting;
+		let { curIndex } = setting;
 		this.list = list;
+		if (curIndex >= list.length) {
+			curIndex = list.length - 1;
+		}
 		this.cur_index = curIndex;
-		setSetting(setting).then(() => {
+		setSetting({
+			list,
+			curIndex,
+		}).then(() => {
 			this.emit(StateEvent.Change);
 		});
 	}

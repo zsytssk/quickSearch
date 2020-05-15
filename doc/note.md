@@ -1,3 +1,15 @@
+- @ques action th add
+
+- @ques youtube 无法显示 cross demain...
+
+- @todo 支持直接切换到特定的网站
+
+- @todo 产品的说明字段空白，或者缺少图标或屏幕截图，看起来比较可疑。
+
+- @todo content option 的 state 同步...
+
+## 2020-05-12 11:58:03
+
 - @todo 搜索列表功能
 
   - 删除 编辑 添加 排序...
@@ -12,6 +24,8 @@
 - @ques 有没有简单的 svgicon 库
 
 - @todo ts remote key from object
+
+- @ques react-icons 是不是很小...
 
 ## 2020-05-09 09:29:39
 

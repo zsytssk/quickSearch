@@ -4,21 +4,22 @@ import Input from 'antd/es/input';
 import Button from 'antd/es/button';
 import { getState } from '../state/state';
 import { getSetting, SettingItem } from '@app/utils/chromeUtils';
+import { createRandomString } from '@app/utils/utils';
 
-import DeleteOutlined from '@ant-design/icons/DeleteOutlined';
-import SaveFilled from '@ant-design/icons/SaveFilled';
+import { DeleteOutlined, PlusOutlined, SaveOutlined } from '@ant-design/icons/lib/icons';
 
 import style from './setting.module.less';
 import 'antd/es/table/style/index.css';
 import 'antd/es/input/style/index.css';
 import 'antd/es/button/style/index.css';
 import 'antd/es/pagination/style/index.css';
-import { createRandomString } from '@app/utils/utils';
 
 type ShowItem = Without<SettingItem, 'id'> & {
 	key: string;
 	status: 'empty' | 'normal' | 'modified';
 };
+
+let a: ShowItem;
 
 export function Setting() {
 	const { Column } = Table;
@@ -32,14 +33,22 @@ export function Setting() {
 	}, []);
 
 	useEffect(() => {
-		const _show_state = state?.list?.map((item, index) => {
-			return {
-				...item,
-				key: item.id,
-				status: 'normal' as ShowItem['status'],
-			};
-		});
-		console.log(`test:>`, _show_state);
+		const _show_state =
+			state?.list?.map((item, index) => {
+				const { id, ...other } = item;
+				return {
+					...other,
+					key: id,
+					status: 'normal' as ShowItem['status'],
+				};
+			}) || [];
+		const first = {
+			status: 'empty',
+			key: createRandomString(),
+			name: '',
+			url: '',
+		} as ShowItem;
+		_show_state.unshift(first);
 		setShowState(_show_state);
 	}, [state_index]);
 
@@ -49,19 +58,6 @@ export function Setting() {
 			return _item.name !== item.name;
 		});
 		state.updateSearchSetting({ list: new_list, curIndex: cur_index });
-	};
-
-	const addFn = () => {
-		const id = createRandomString();
-		setShowState([
-			{
-				key: id,
-				name: '',
-				url: '',
-				status: 'empty' as ShowItem['status'],
-			},
-			...show_state,
-		]);
 	};
 
 	const saveFn = (item: ShowItem) => {
@@ -103,20 +99,14 @@ export function Setting() {
 	}
 	return (
 		<>
-			<div>
-				<Button
-					onClick={() => {
-						addFn();
-					}}
-				>
-					add
-				</Button>
-			</div>
 			<Table dataSource={show_state} className={style.setting}>
 				<Column
 					title="Name"
 					dataIndex="name"
 					render={(text, record: ShowItem) => {
+						const { status } = record;
+						const new_status = status === 'empty' ? 'empty' : 'modified';
+						console.log(`test:>`, status, new_status);
 						return (
 							<Input
 								defaultValue={text}
@@ -124,7 +114,7 @@ export function Setting() {
 									updateFn({
 										...record,
 										name: event.target.value,
-										status: 'modified',
+										status: new_status,
 									});
 								}}
 							/>
@@ -132,10 +122,13 @@ export function Setting() {
 					}}
 					width={200}
 				/>
+
 				<Column
 					title="Url"
 					dataIndex="url"
 					render={(text, record: ShowItem) => {
+						const { status } = record;
+						const new_status = status === 'empty' ? 'empty' : 'modified';
 						return (
 							<Input
 								defaultValue={text}
@@ -143,7 +136,7 @@ export function Setting() {
 									updateFn({
 										...record,
 										url: event.target.value,
-										status: 'modified',
+										status: new_status,
 									});
 								}}
 							/>
@@ -157,24 +150,42 @@ export function Setting() {
 					key="action"
 					render={(text, record: ShowItem) => {
 						const { status } = record;
-						const can_save = status !== 'normal';
+						const can_add = status === 'empty';
+						const can_save = status === 'modified';
 						const can_delete = status !== 'empty';
 						return (
 							<span className={style.action}>
-								{can_save && (
-									<SaveFilled
+								{can_add && (
+									<Button
+										shape="circle"
 										onClick={() => {
 											saveFn(record);
 										}}
-									/>
+									>
+										<PlusOutlined />
+									</Button>
+								)}
+
+								{can_save && (
+									<Button
+										shape="circle"
+										onClick={() => {
+											saveFn(record);
+										}}
+									>
+										<SaveOutlined />
+									</Button>
 								)}
 
 								{can_delete && (
-									<DeleteOutlined
+									<Button
+										shape="circle"
 										onClick={() => {
 											deleteFn(record);
 										}}
-									/>
+									>
+										<DeleteOutlined />
+									</Button>
 								)}
 							</span>
 						);

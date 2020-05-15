@@ -13,9 +13,17 @@ class StateModel extends EventCom {
 		this.keyword = keyword || 'I love you!';
 		this.emit(StateEvent.Change);
 	}
-	public updateSearchIndex() {
+	public addSearchIndex() {
 		const { list, curIndex } = this.setting;
 		let new_index = curIndex + 1;
+		if (new_index > list.length - 1) {
+			new_index = 0;
+		}
+		this.setting.curIndex = new_index;
+		this.emit(StateEvent.Change);
+	}
+	public setSearchIndex(new_index: number) {
+		const { list } = this.setting;
 		if (new_index > list.length - 1) {
 			new_index = 0;
 		}

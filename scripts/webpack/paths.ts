@@ -6,6 +6,7 @@ const resolveApp = (relativePath: string) => path.resolve(appDirectory, relative
 
 export const paths = {
 	appPath: resolveApp('.'),
+	packageJson: resolveApp('package.json'),
 	appBuild: resolveApp('build'),
 	optionsBuild: path.resolve(resolveApp('build'), 'options/'),
 	optionsTs: resolveApp('src/options/options.tsx'),
@@ -16,4 +17,5 @@ export const paths = {
 	backgroundTs: resolveApp('src/background/background.ts'),
 	appSrc: resolveApp('src'),
 	tpl: resolveApp('tpl'),
+	tplManifest: resolveApp('tpl/manifest.json'),
 };

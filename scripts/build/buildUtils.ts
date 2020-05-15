@@ -1,36 +1,26 @@
-import * as readline from 'readline';
 import { paths } from '../webpack/paths';
 import { build } from '../webpack/webpackUtils';
 import { cp } from '../zutil/ls/main';
 import { state } from '../webpack/state';
-import { build_tip_arr } from './build';
+import { readFile } from '../zutil/ls/asyncUtil';
+import { replaceReg } from '../zutil/utils/replaceReg';
+import { write } from '../zutil/ls/write';
 
-// 监听本地
-export async function listenLocal() {
-	let build_tips = `请选择要执行的命令\n$1 > `;
-	let build_tip_str = '';
-	for (const item of build_tip_arr) {
-		build_tip_str += ` ${item}\n`;
-	}
-	build_tips = build_tips.replace('$1', build_tip_str);
-
-	return new Promise((resolve, reject) => {
-		const rl = readline.createInterface({
-			input: process.stdin,
-			output: process.stdout,
-		});
-
-		console.log('--------------------');
-		console.log();
-
-		rl.question(build_tips, (answer) => {
-			console.log(`选中${answer}`);
-			rl.close();
-			resolve(answer);
-		});
-	}) as Promise<string>;
+export async function beforeBuild() {
+	/** 将packageJson中的版本号写入manifest */
+	const { packageJson, tplManifest } = paths;
+	let package_str = await readFile(packageJson);
+	let manifest_str = await readFile(tplManifest);
+	let package_obj = JSON.parse(package_str);
+	manifest_str = replaceReg(
+		manifest_str,
+		/"version": "[^"]+"/g,
+		`"version": "${package_obj.version}"`,
+	);
+	await write(tplManifest, manifest_str);
 }
 
+// 监听本地
 export function setAnalyze(status: boolean) {
 	state.analyze = status;
 }

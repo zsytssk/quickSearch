@@ -1,5 +1,4 @@
 import {
-	listenLocal,
 	afterBuild,
 	buildProd,
 	test,
@@ -8,7 +7,9 @@ import {
 	buildTestCon,
 	buildTestOptions,
 	buildProdOptions,
+	beforeBuild,
 } from './buildUtils';
+import { listenLocal } from '../zutil/utils/utils';
 
 const type = process.argv.slice(2)[0] || 'buildMap';
 
@@ -23,6 +24,7 @@ export const build_tip_arr = [
 
 const buildMap = {
 	'1': async () => {
+		await beforeBuild();
 		await buildProd();
 		await afterBuild();
 	},
@@ -55,7 +57,7 @@ const buildMap = {
 const actionMap = {
 	async buildMap() {
 		for (let i = 0; i < 50; i++) {
-			const listen_type = await listenLocal();
+			const listen_type = await listenLocal(build_tip_arr);
 			console.time(`buildType:${listen_type}, costTime:`);
 			if (buildMap[listen_type]) {
 				await buildMap[listen_type]();
