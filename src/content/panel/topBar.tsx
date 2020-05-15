@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useMemo } from 'react';
 import classnames from 'classnames';
 import { getUrl } from '@app/utils/chromeUtils';
 
@@ -9,9 +9,10 @@ import MoreOutlined from '@ant-design/icons/MoreOutlined';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import { searchUrl } from '../cusHook/searchUrl';
 import { getState } from '../state/state';
+import { getFavicon } from '@app/utils/utils';
 
 export function TopBar() {
-	const [state] = getState();
+	const [state, changeIndex] = getState();
 	const [editable, setEditable] = useState(false);
 	const [searchWord, setSearchWord] = useState('');
 	const [showMore, setShowMore] = useState(false);
@@ -38,10 +39,20 @@ export function TopBar() {
 		toggleEditable();
 		return false;
 	};
+	const [icon, name] = useMemo(() => {
+		const item = state?.setting?.list?.find((item, index) => {
+			return index === state?.setting?.curIndex;
+		});
+		const icon = getFavicon(item.url);
+		return [icon, item.name];
+	}, [changeIndex]);
 
 	return (
 		<div className="top-bar">
 			<form className={classnames({ 'bs-form': true, active: editable })} onSubmit={onSubmit}>
+				<div className="icon-box">
+					<img src={icon} alt={name} />
+				</div>
 				<div className="fl">
 					<div className="content" title="">
 						{keyword}

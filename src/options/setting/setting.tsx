@@ -4,15 +4,16 @@ import Input from 'antd/es/input';
 import Button from 'antd/es/button';
 import { getState } from '../state/state';
 import { getSetting, SettingItem } from '@app/utils/chromeUtils';
-import { createRandomString } from '@app/utils/utils';
+import { createRandomString, getFavicon } from '@app/utils/utils';
 
-import { DeleteOutlined, PlusOutlined, SaveOutlined } from '@ant-design/icons/lib/icons';
+import SaveOutlined from '@ant-design/icons/lib/icons/SaveOutlined';
+import PlusOutlined from '@ant-design/icons/lib/icons/PlusOutlined';
+import DeleteOutlined from '@ant-design/icons/lib/icons/DeleteOutlined';
 
 import style from './setting.module.less';
 import 'antd/es/table/style/index.css';
 import 'antd/es/input/style/index.css';
 import 'antd/es/button/style/index.css';
-import 'antd/es/pagination/style/index.css';
 
 type ShowItem = Without<SettingItem, 'id'> & {
 	key: string;
@@ -99,7 +100,16 @@ export function Setting() {
 	}
 	return (
 		<>
-			<Table dataSource={show_state} className={style.setting}>
+			<Table dataSource={show_state} className={style.setting} pagination={false}>
+				<Column
+					title="Icon"
+					dataIndex="name"
+					render={(text, record: ShowItem) => {
+						const icon = getFavicon(record?.url);
+						return <img src={icon} style={{ width: '30px' }} />;
+					}}
+					width={200}
+				/>
 				<Column
 					title="Name"
 					dataIndex="name"

@@ -1,3 +1,15 @@
+- @todo 顶部显示当前的引擎...
+
+- @todo setting 页直接跳转到 github, issue...
+
+## 2020-05-15 12:02:10
+
+- @ques 显示图片...
+
+```js
+favicon.ico;
+```
+
 - @ques action th add
 
 - @ques youtube 无法显示 cross demain...

@@ -1,6 +1,7 @@
-import SyncOutlined from '@ant-design/icons/SyncOutlined';
+import LeftSquareOutlined from '@ant-design/icons/LeftSquareOutlined';
 import React from 'react';
 import { getState } from '../state/state';
+import { getFavicon } from '@app/utils/utils';
 
 export function ToolBar() {
 	const [state] = getState();
@@ -13,11 +14,22 @@ export function ToolBar() {
 					state.addSearchIndex();
 				}}
 			>
-				<SyncOutlined />
+				<LeftSquareOutlined />
 			</a>
 			<div className="extend">
 				{state?.setting?.list.map((item, index) => {
-					return <div className="item">{item.name}</div>;
+					const icon = getFavicon(item.url);
+					return (
+						<div
+							className={`item ${state.setting.curIndex === index ? 'cur' : ''}`}
+							onClick={() => {
+								state.setSearchIndex(index);
+							}}
+							key={item.id}
+						>
+							<img src={icon} alt={item.name} />
+						</div>
+					);
 				})}
 			</div>
 		</div>

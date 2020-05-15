@@ -52,5 +52,5 @@ export function getState() {
 		};
 	}, [changeIndex]);
 
-	return [_state] as [StateModel];
+	return [_state, changeIndex] as [StateModel, number];
 }
