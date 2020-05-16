@@ -1,6 +1,19 @@
+- @bug check 点着 没有反应...
+
+## 2020-05-15 20:29:31
+
 - @todo 顶部显示当前的引擎...
 
 - @todo setting 页直接跳转到 github, issue...
+
+  - 添加更多描述...
+
+- @ques check 放在最前面
+
+- @ques `width: (100vh - 80);`
+
+- @bug setSearchIndex 导致每一个 render 重复执行...
+  - 如果没有异步执行 就不会导致这些变化
 
 ## 2020-05-15 12:02:10
 

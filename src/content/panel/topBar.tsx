@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useMemo } from 'react';
+import React, { ChangeEvent, useState, useMemo, useRef, useCallback } from 'react';
 import classnames from 'classnames';
 import { getUrl } from '@app/utils/chromeUtils';
 
@@ -12,33 +12,30 @@ import { getState } from '../state/state';
 import { getFavicon } from '@app/utils/utils';
 
 export function TopBar() {
+	const ref = useRef<HTMLInputElement>();
 	const [state, changeIndex] = getState();
 	const [editable, setEditable] = useState(false);
-	const [searchWord, setSearchWord] = useState('');
 	const [showMore, setShowMore] = useState(false);
-	const { keyword } = state;
 	const optionUrl = getUrl('options/index.html');
-	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setSearchWord(e.target.value);
-	};
-	const toggleEditable = () => {
-		setEditable(!editable);
-	};
-	const toggleMore = () => {
+
+	const toggleMore = useCallback(() => {
 		setShowMore(!showMore);
-	};
-	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-		e.target.select();
-		setSearchWord(e.target.value);
-	};
-	const onSubmit = (
-		event: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-	) => {
-		event.preventDefault();
-		state.updateKeyword(searchWord);
-		toggleEditable();
-		return false;
-	};
+	}, [showMore]);
+
+	const toggleEditable = useCallback(() => {
+		setEditable(!editable);
+	}, [editable]);
+
+	const onSubmit = useCallback(
+		(event: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+			event.preventDefault();
+			state.updateKeyword(ref.current.value);
+			toggleEditable();
+			return false;
+		},
+		[editable],
+	);
+
 	const [icon, name] = useMemo(() => {
 		const item = state?.setting?.list?.find((item, index) => {
 			return index === state?.setting?.curIndex;
@@ -48,21 +45,21 @@ export function TopBar() {
 	}, [changeIndex]);
 
 	return (
-		<div className="top-bar">
-			<form className={classnames({ 'bs-form': true, active: editable })} onSubmit={onSubmit}>
+		<div className={classnames({ 'top-bar': true, active: editable })}>
+			<form className={classnames({ 'bs-form': true })} onSubmit={onSubmit}>
 				<div className="icon-box">
 					<img src={icon} alt={name} />
 				</div>
-				<div className="fl">
-					<div className="content" title="">
-						{keyword}
-					</div>
+				<div className="textBox">
+					<input type="text" defaultValue={state.keyword} ref={ref} />
 					<a className="confirm" onClick={onSubmit}>
 						<CheckOutlined />
 					</a>
-					<input type="text" defaultValue={keyword} onFocus={handleFocus} onChange={onChange} />
 				</div>
-				<div className="fr">
+				<div className="showBox">
+					<div className="content" title="">
+						{state.keyword}
+					</div>
 					<a className="search" onClick={toggleEditable}>
 						<SearchOutlined />
 					</a>

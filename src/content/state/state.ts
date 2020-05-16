@@ -1,5 +1,5 @@
 import { EventCom } from '@app/utils/eventCom';
-import { Setting } from '@app/utils/chromeUtils';
+import { Setting, setSetting } from '@app/utils/chromeUtils';
 import { useState, useEffect } from 'react';
 
 const StateEvent = {
@@ -19,8 +19,14 @@ class StateModel extends EventCom {
 		if (new_index > list.length - 1) {
 			new_index = 0;
 		}
+
 		this.setting.curIndex = new_index;
+
 		this.emit(StateEvent.Change);
+		setSetting({
+			list,
+			curIndex: new_index,
+		});
 	}
 	public setSearchIndex(new_index: number) {
 		const { list } = this.setting;
@@ -28,7 +34,13 @@ class StateModel extends EventCom {
 			new_index = 0;
 		}
 		this.setting.curIndex = new_index;
+
+		/** 如果放在异步冲就会导致 卡死... */
 		this.emit(StateEvent.Change);
+		setSetting({
+			list,
+			curIndex: new_index,
+		});
 	}
 	public updateSearchSetting(setting: Setting) {
 		this.setting = setting;

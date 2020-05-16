@@ -16,6 +16,7 @@ class StateModel extends EventCom {
 			curIndex = list.length - 1;
 		}
 		this.cur_index = curIndex;
+
 		setSetting({
 			list,
 			curIndex,
