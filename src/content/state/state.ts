@@ -1,5 +1,6 @@
 import { EventCom } from '@app/utils/eventCom';
 import { Setting, setSetting } from '@app/utils/chromeUtils';
+import { sleep } from '@app/utils/utils';
 import { useState, useEffect } from 'react';
 
 const StateEvent = {
@@ -22,10 +23,11 @@ class StateModel extends EventCom {
 
 		this.setting.curIndex = new_index;
 
-		this.emit(StateEvent.Change);
 		setSetting({
 			list,
 			curIndex: new_index,
+		}).then(() => {
+			this.emit(StateEvent.Change);
 		});
 	}
 	public setSearchIndex(new_index: number) {
@@ -34,15 +36,14 @@ class StateModel extends EventCom {
 			new_index = 0;
 		}
 		this.setting.curIndex = new_index;
-
-		/** 如果放在异步冲就会导致 卡死... */
-		this.emit(StateEvent.Change);
 		setSetting({
 			list,
 			curIndex: new_index,
+		}).then(() => {
+			this.emit(StateEvent.Change);
 		});
 	}
-	public updateSearchSetting(setting: Setting) {
+	public initSearchSetting(setting: Setting) {
 		this.setting = setting;
 		this.emit(StateEvent.Change);
 	}
@@ -58,7 +59,9 @@ export function getState() {
 			setState(state);
 			setChangeIndex(changeIndex + 1);
 		};
+		// 如果不做成异步的就会变成无限死循环
 		state.on(StateEvent.Change, fn);
+		sleep().then(() => {});
 		return () => {
 			state.off(StateEvent.Change, fn);
 		};

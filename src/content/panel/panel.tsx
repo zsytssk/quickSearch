@@ -15,7 +15,7 @@ export function Panel() {
 
 	useEffect(() => {
 		getSetting().then((setting) => {
-			state.updateSearchSetting(setting);
+			state.initSearchSetting(setting);
 		});
 	}, []);
 

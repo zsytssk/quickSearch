@@ -1,9 +1,9 @@
-type Func<T> = (...params: []) => T;
+type Fun<T> = (...params: any[]) => T;
 
 /** 每一个event的数据 */
 export type EventData = Set<{
 	caller: any;
-	callback: Func<any>;
+	callback: Fun<any>;
 	once?: boolean;
 	off?: () => void;
 }>;
@@ -20,7 +20,7 @@ export class EventCom {
 	 * @param callback
 	 * @param caller
 	 */
-	public on(event: string, callback: Func<any>, caller?: any, once?: boolean) {
+	public on(event: string, callback: Fun<any>, caller?: any, once?: boolean) {
 		let events: EventData;
 		if (this.events.has(event)) {
 			events = this.events.get(event);
@@ -40,7 +40,7 @@ export class EventCom {
 
 		events.add({ caller, callback, once, off });
 	}
-	public once(event: string, callback?: Func<any>, caller?: any) {
+	public once(event: string, callback?: Fun<any>, caller?: any) {
 		return this.on(event, callback, caller, true);
 	}
 	public getBind(event: string) {
@@ -53,12 +53,12 @@ export class EventCom {
 	 * @param callback
 	 * @param caller
 	 */
-	public off(event: string, callback: Func<any>, caller?: any) {
+	public off(event: string, callback: Fun<any>, caller?: any) {
 		if (!this.events.has(event)) {
 			return;
 		}
 		const events = this.events.get(event);
-		for (const item of events) {
+		for (const item of [...events]) {
 			if (item.callback === callback && item.caller === caller) {
 				events.delete(item);
 				break;
@@ -67,7 +67,7 @@ export class EventCom {
 	}
 	public offAllCaller(caller: any) {
 		for (const events of this.events.values()) {
-			for (const item of events) {
+			for (const item of [...events]) {
 				if (item.caller === caller) {
 					events.delete(item);
 				}
@@ -82,7 +82,7 @@ export class EventCom {
 	public emit(event: string, ...params: any[]) {
 		if (this.events.has(event)) {
 			const events = this.events.get(event);
-			for (const item of events) {
+			for (const item of [...events]) {
 				const { callback, once, off } = item;
 				if (typeof callback === 'function') {
 					callback(...params);

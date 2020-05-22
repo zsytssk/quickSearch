@@ -10,3 +10,11 @@ export function getFavicon(url: string) {
 	const url_info = new URL(url);
 	return `${url_info.origin}/favicon.ico`;
 }
+
+export function sleep(seconds: number = 0) {
+	return new Promise((resolve, reject) => {
+		setTimeout(() => {
+			resolve();
+		}, seconds * 1000);
+	});
+}
