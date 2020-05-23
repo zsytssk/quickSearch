@@ -1,17 +1,34 @@
-- @bug check 点着 没有反应...
+- @ques 统一的 stateManager
+
+## 2020-05-22 09:15:39
+
+- @todo &from=vto 就不需要了 translate ...
+
+- @opt Panel 里面的逻辑...
+
+- @todo game -> player[] 这种格式的 state 如何控制
+
+  - react test:>
+  - 我要实际的做一个例子来展示...
+  - watchModal(modal)
+
+- changeIndex 会不会有某种问题...
 
 ## 2020-05-15 20:29:31
+
+- @todo 选中当前 ...
 
 - @todo 顶部显示当前的引擎...
 
 - @todo setting 页直接跳转到 github, issue...
-
   - 添加更多描述...
 
+* @ques `width: (100vh - 80);`
+
+### 2020-05-22 09:12:43
+
 - @ques check 放在最前面
-
-- @ques `width: (100vh - 80);`
-
+- @bug check 点着 没有反应...
 - @bug setSearchIndex 导致每一个 render 重复执行...
   - 如果没有异步执行 就不会导致这些变化
 

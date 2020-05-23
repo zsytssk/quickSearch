@@ -6,18 +6,24 @@ import { detectShow } from '../cusHook/detectShow';
 import { ToolBar } from './toolBar';
 import { TopBar } from './topBar';
 import { Box } from './box';
-import { getState } from '../state/state';
+import { getSearchState } from '../../state/searchState';
+import { getSettingState } from '../../state/settingState';
 import { getSetting } from '@app/utils/chromeUtils';
 
 export function Panel() {
-	const [state] = getState();
+	const [search_state] = getSearchState();
+	const [setting_state] = getSettingState();
 	const [show, setShow, keyword] = detectShow();
 
 	useEffect(() => {
 		getSetting().then((setting) => {
-			state.initSearchSetting(setting);
+			setting_state.initSearchSetting(setting);
 		});
 	}, []);
+
+	useEffect(() => {
+		search_state.updateKeyword(keyword);
+	}, [keyword]);
 
 	const toggleShow = () => {
 		const next_show = !show;
@@ -27,10 +33,6 @@ export function Panel() {
 	useEffect(() => {
 		toggleBodyStyle(show);
 	}, [show]);
-
-	useEffect(() => {
-		state.updateKeyword(keyword);
-	}, [keyword]);
 
 	useEffect(() => {
 		toggleBodyStyle(show);

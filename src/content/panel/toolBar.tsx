@@ -1,26 +1,21 @@
 import LeftSquareOutlined from '@ant-design/icons/LeftSquareOutlined';
 import React, { useEffect, useState } from 'react';
-import { getState } from '../state/state';
+import { getSettingState } from '../../state/settingState';
 import { getFavicon } from '@app/utils/utils';
 import { Setting } from '@app/utils/chromeUtils';
 
 export function ToolBar() {
-	const [state, changeIndex] = getState();
+	const [setting_state, changeIndex] = getSettingState();
 	const [list, setList] = useState<Setting['list']>([]);
 
 	useEffect(() => {
-		const list = state?.setting?.list;
+		const list = setting_state?.list;
 		setList([...list]);
 	}, [changeIndex]);
 
 	return (
 		<div className="toolbar">
-			<a
-				className="change"
-				onClick={() => {
-					state.addSearchIndex();
-				}}
-			>
+			<a className="change">
 				<LeftSquareOutlined />
 			</a>
 			<div className="extend">
@@ -28,9 +23,9 @@ export function ToolBar() {
 					const icon = getFavicon(item.url);
 					return (
 						<div
-							className={`item ${state.setting.curIndex === index ? 'cur' : ''}`}
+							className={`item ${setting_state.cur_index === index ? 'cur' : ''}`}
 							onClick={() => {
-								state.setSearchIndex(index);
+								setting_state.setSearchIndex(index);
 							}}
 							key={item.id}
 						>

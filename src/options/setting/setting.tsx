@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Table from 'antd/es/table';
 import Input from 'antd/es/input';
 import Button from 'antd/es/button';
-import { getState } from '../state/state';
+import { getSettingState } from '../../state/settingState';
 import { getSetting, SettingItem } from '@app/utils/chromeUtils';
 import { createRandomString, getFavicon } from '@app/utils/utils';
 
@@ -11,6 +11,7 @@ import PlusOutlined from '@ant-design/icons/lib/icons/PlusOutlined';
 import DeleteOutlined from '@ant-design/icons/lib/icons/DeleteOutlined';
 
 import style from './setting.module.less';
+
 import 'antd/es/table/style/index.css';
 import 'antd/es/input/style/index.css';
 import 'antd/es/button/style/index.css';
@@ -25,17 +26,17 @@ let a: ShowItem;
 export function Setting() {
 	const { Column } = Table;
 	const [show_state, setShowState] = useState<ShowItem[]>();
-	const [state, state_index] = getState();
+	const [setting_state, setting_state_index] = getSettingState();
 
 	useEffect(() => {
 		getSetting().then((setting) => {
-			state.updateSearchSetting(setting);
+			setting_state.updateSearchSetting(setting);
 		});
 	}, []);
 
 	useEffect(() => {
 		const _show_state =
-			state?.list?.map((item, index) => {
+			setting_state?.list?.map((item, index) => {
 				const { id, ...other } = item;
 				return {
 					...other,
@@ -51,18 +52,18 @@ export function Setting() {
 		} as ShowItem;
 		_show_state.unshift(first);
 		setShowState(_show_state);
-	}, [state_index]);
+	}, [setting_state_index]);
 
 	const deleteFn = (item: ShowItem) => {
-		const { cur_index } = state;
-		const new_list = state?.list?.filter((_item) => {
+		const { cur_index } = setting_state;
+		const new_list = setting_state?.list?.filter((_item) => {
 			return _item.name !== item.name;
 		});
-		state.updateSearchSetting({ list: new_list, curIndex: cur_index });
+		setting_state.updateSearchSetting({ list: new_list, curIndex: cur_index });
 	};
 
 	const saveFn = (item: ShowItem) => {
-		const { list, cur_index } = state;
+		const { list, cur_index } = setting_state;
 		const { key, ...other } = item;
 		const index = list.findIndex((_item) => {
 			return item.key === _item.id;
@@ -79,7 +80,7 @@ export function Setting() {
 				...other,
 			});
 		}
-		state.updateSearchSetting({ list, curIndex: cur_index });
+		setting_state.updateSearchSetting({ list, curIndex: cur_index });
 	};
 
 	const updateFn = (item: ShowItem) => {

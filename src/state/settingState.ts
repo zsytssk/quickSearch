@@ -6,36 +6,31 @@ import { useState, useEffect } from 'react';
 const StateEvent = {
 	Change: 'change',
 };
-class StateModel extends EventCom {
-	public keyword: string;
-	public suffix = '&from=vto';
-	public setting = {} as Setting;
-	public updateKeyword(keyword: string) {
-		this.keyword = keyword || 'I love you!';
-		this.emit(StateEvent.Change);
-	}
-	public addSearchIndex() {
-		const { list, curIndex } = this.setting;
-		let new_index = curIndex + 1;
-		if (new_index > list.length - 1) {
-			new_index = 0;
+class SettingModel extends EventCom {
+	public list: Setting['list'];
+	public cur_index: number;
+	public updateSearchSetting(setting: Setting) {
+		const { list } = setting;
+		let { curIndex } = setting;
+		this.list = list;
+		if (curIndex >= list.length) {
+			curIndex = list.length - 1;
 		}
-
-		this.setting.curIndex = new_index;
+		this.cur_index = curIndex;
 
 		setSetting({
 			list,
-			curIndex: new_index,
+			curIndex,
 		}).then(() => {
 			this.emit(StateEvent.Change);
 		});
 	}
 	public setSearchIndex(new_index: number) {
-		const { list } = this.setting;
+		const { list } = this;
 		if (new_index > list.length - 1) {
 			new_index = 0;
 		}
-		this.setting.curIndex = new_index;
+		this.cur_index = new_index;
 		setSetting({
 			list,
 			curIndex: new_index,
@@ -44,13 +39,15 @@ class StateModel extends EventCom {
 		});
 	}
 	public initSearchSetting(setting: Setting) {
-		this.setting = setting;
+		const { list, curIndex } = setting;
+		this.list = list;
+		this.cur_index = curIndex;
 		this.emit(StateEvent.Change);
 	}
 }
 
-let state = new StateModel();
-export function getState() {
+let state = new SettingModel();
+export function getSettingState() {
 	const [_state, setState] = useState(state);
 	const [changeIndex, setChangeIndex] = useState(0);
 
@@ -61,11 +58,10 @@ export function getState() {
 		};
 		// 如果不做成异步的就会变成无限死循环
 		state.on(StateEvent.Change, fn);
-		sleep().then(() => {});
 		return () => {
 			state.off(StateEvent.Change, fn);
 		};
 	}, [changeIndex]);
 
-	return [_state, changeIndex] as [StateModel, number];
+	return [_state, changeIndex] as [SettingModel, number];
 }
